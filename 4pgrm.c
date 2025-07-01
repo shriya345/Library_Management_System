@@ -1,40 +1,51 @@
 #include <stdio.h>
 
 
-void topology(int n, int a[10][10], int sc[10]) {
-    for (int i = 1; i <= n; i++) {
-       
-        if (sc[i] == 0) {
-            printf("%d ", i);   
-            sc[i] = -1;         
+void topologicalSort(int nodes, int matrix[10][10], int indegree[10]) {
+    int i, j;
 
-           
-            for (int j = 1; j <= n; j++)
-                if (a[i][j] == 1)
-                    sc[j]--;    
+    for (i = 1; i <= nodes; i++) {
+        for (int current = 1; current <= nodes; current++) {
+            if (indegree[current] == 0) {
+             
+                printf("%d ", current);
+                indegree[current] = -1; 
 
-            i = 0; 
+               
+                for (j = 1; j <= nodes; j++) {
+                    if (matrix[current][j] == 1)
+                        indegree[j]--;
+                }
+
+                break; 
+            }
         }
     }
 }
 
 int main() {
-    int n, a[10][10], sc[10] = {0};  
+    int matrix[10][10], indegree[10], nodes, i, j;
 
-    printf("Enter number of nodes: ");
-    scanf("%d", &n);
+    printf("Enter number of nodes:\n");
+    scanf("%d", &nodes);
 
-    printf("Enter adjacency matrix:\n");
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= n; j++) {
-            scanf("%d", &a[i][j]);
-            if (a[i][j] == 1)
-                sc[j]++;  
+
+    for (i = 1; i <= nodes; i++)
+        indegree[i] = 0;
+
+    printf("Enter the adjacency matrix:\n");
+    for (i = 1; i <= nodes; i++) {
+        for (j = 1; j <= nodes; j++) {
+            scanf("%d", &matrix[i][j]);
+
+            
+            if (matrix[i][j] == 1)
+                indegree[j]++;
         }
     }
 
-    printf("Topological Order: ");
-    topology(n, a, sc);
+    printf("Topological order of the graph:\n");
+    topologicalSort(nodes, matrix, indegree);
 
     return 0;
 }
