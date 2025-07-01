@@ -1,51 +1,48 @@
 #include <stdio.h>
 
-
-void topologicalSort(int nodes, int matrix[10][10], int indegree[10]) {
+// Topological Sort using Source Removal
+void topologicalSort(int n, int adj[10][10], int indegree[10]) {
     int i, j;
 
-    for (i = 1; i <= nodes; i++) {
-        for (int current = 1; current <= nodes; current++) {
-            if (indegree[current] == 0) {
-             
-                printf("%d ", current);
-                indegree[current] = -1; 
+    for (i = 1; i <= n; i++) {
+        for (int node = 1; node <= n; node++) {
+            if (indegree[node] == 0) {
+                printf("%d ", node);         // print this node
+                indegree[node] = -1;         // mark it as removed
 
-               
-                for (j = 1; j <= nodes; j++) {
-                    if (matrix[current][j] == 1)
+                // Decrease indegree of its neighbors
+                for (j = 1; j <= n; j++) {
+                    if (adj[node][j] == 1)
                         indegree[j]--;
                 }
 
-                break; 
+                break; // restart loop to find new source node
             }
         }
     }
 }
 
 int main() {
-    int matrix[10][10], indegree[10], nodes, i, j;
+    int adj[10][10], indegree[10], n, i, j;
 
     printf("Enter number of nodes:\n");
-    scanf("%d", &nodes);
+    scanf("%d", &n);
 
-
-    for (i = 1; i <= nodes; i++)
+    // Initialize indegree array
+    for (i = 1; i <= n; i++)
         indegree[i] = 0;
 
-    printf("Enter the adjacency matrix:\n");
-    for (i = 1; i <= nodes; i++) {
-        for (j = 1; j <= nodes; j++) {
-            scanf("%d", &matrix[i][j]);
-
-            
-            if (matrix[i][j] == 1)
-                indegree[j]++;
+    printf("Enter adjacency matrix:\n");
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            scanf("%d", &adj[i][j]);
+            if (adj[i][j] == 1)
+                indegree[j]++; // Count incoming edges
         }
     }
 
     printf("Topological order of the graph:\n");
-    topologicalSort(nodes, matrix, indegree);
+    topologicalSort(n, adj, indegree);
 
     return 0;
 }
