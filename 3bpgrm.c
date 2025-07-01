@@ -1,37 +1,42 @@
 #include <stdio.h>
 
-void bfs(int n, int a[10][10], int source, int visited[]) {
-    int q[10], front = 0, rear = 0;
+void bfs(int n, int adj[10][10], int source, int visited[10]) {
+    int queue[10], front = 0, rear = 0;
     visited[source] = 1;
-    q[rear++] = source;
+    queue[rear++] = source;
 
     while (front < rear) {
-        int v = q[front++];
-        printf("%d ", v);
+        int node = queue[front++];
+        printf("%d ", node);
+
         for (int i = 1; i <= n; i++) {
-            if (a[v][i] && !visited[i]) {
+            if (adj[node][i] == 1 && !visited[i]) {
+                queue[rear++] = i;
                 visited[i] = 1;
-                q[rear++] = i;
             }
         }
     }
 }
 
 int main() {
-    int n, a[10][10], visited[10] = {0}, source;
-    printf("Enter number of nodes: ");
+    int n, adj[10][10], visited[10], source;
+
+    printf("Enter number of nodes:\n");
     scanf("%d", &n);
 
-    printf("Enter adjacency matrix:\n");
+    printf("Enter the adjacency matrix:\n");
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++)
-            scanf("%d", &a[i][j]);
+            scanf("%d", &adj[i][j]);
 
-    printf("Enter source node: ");
+    printf("Enter the source node:\n");
     scanf("%d", &source);
 
-    printf("BFS traversal: ");
-    bfs(n, a, source, visited);
+    for (int i = 1; i <= n; i++)
+        visited[i] = 0;
+
+    printf("Nodes reachable using BFS:\n");
+    bfs(n, adj, source, visited);
 
     return 0;
 }
