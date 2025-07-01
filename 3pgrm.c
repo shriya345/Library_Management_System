@@ -1,26 +1,35 @@
 #include <stdio.h>
 
-void dfs(int n, int a[10][10], int v, int visited[]) {
-    printf("%d ", v);
-    visited[v] = 1;
-    for (int i = 1; i <= n; i++)
-        if (a[v][i] && !visited[i])
-            dfs(n, a, i, visited);
+void dfs(int n, int adj[10][10], int node, int visited[10]) {
+    printf("%d ", node);
+    visited[node] = 1;
+
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i] && adj[node][i] == 1) {
+            dfs(n, adj, i, visited);
+        }
+    }
 }
 
 int main() {
-    int n, a[10][10], source, visited[10] = {0};
-    printf("Enter number of nodes: ");
+    int n, adj[10][10], visited[10], source;
+
+    printf("Enter number of nodes:\n");
     scanf("%d", &n);
 
-    printf("Enter adjacency matrix:\n");
+    printf("Enter the adjacency matrix:\n");
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++)
-            scanf("%d", &a[i][j]);
+            scanf("%d", &adj[i][j]);
 
-    printf("Enter source node: ");
+    printf("Enter the source node:\n");
     scanf("%d", &source);
 
-    printf("DFS traversal: ");
-    dfs(n, a, source, visited);
+    for (int i = 1; i <= n; i++)
+        visited[i] = 0;
+
+    printf("Nodes reachable using DFS:\n");
+    dfs(n, adj, source, visited);
+
+    return 0;
 }
